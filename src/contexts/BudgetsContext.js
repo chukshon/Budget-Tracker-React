@@ -13,16 +13,17 @@ export const BudgetsProvider = ({ children }) => {
   const [budgets, setBudgets] = useLocalStorage('budgets', [])
   const [expenses, setExpenses] = useLocalStorage('expenses', [])
 
-  const getBudgetExpenses = (budgetID) => {
-    return expenses.filter((expense) => expense.budgetId === budgetID)
+  function getBudgetExpenses(budgetId) {
+    return expenses.filter((expense) => expense.budgetId === budgetId)
   }
 
-  const addExpense = ({ description, amount, budgetId }) => {
-    setBudgets((prevExpenses) => {
+  function addExpense({ description, amount, budgetId }) {
+    setExpenses((prevExpenses) => {
       return [...prevExpenses, { id: uuidV4(), description, amount, budgetId }]
     })
   }
-  const addBudget = ({ name, max }) => {
+
+  function addBudget({ name, max }) {
     setBudgets((prevBudgets) => {
       if (prevBudgets.find((budget) => budget.name === name)) {
         return prevBudgets
@@ -31,12 +32,12 @@ export const BudgetsProvider = ({ children }) => {
     })
   }
 
-  const deleteExpense = ({ id }) => {
+  function deleteExpense({ id }) {
     setExpenses((prevExpenses) => {
-      return prevExpenses.find((expense) => expense.id !== id)
+      return prevExpenses.filter((expense) => expense.id !== id)
     })
   }
-  const deleteBudget = ({ id }) => {
+  function deleteBudget({ id }) {
     setExpenses((prevExpenses) => {
       return prevExpenses.map((expense) => {
         if (expense.budgetId !== id) return expense
